@@ -7,7 +7,8 @@
        Inline styles are allowed because WebKit's own audio controls need them. -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src blob:; connect-src https://generativelanguage.googleapis.com; base-uri 'none'; form-action 'none'">
-  <meta name="referrer" content="no-referrer">
+  <!-- Only the site, never the page: a key restricted to this website needs Google to see it. -->
+  <meta name="referrer" content="strict-origin">
   <title>Starling</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
