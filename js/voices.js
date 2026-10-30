@@ -1,0 +1,80 @@
+/* The voices on offer, and which suit which language.
+
+   Gemini TTS detects the language from the text, so choosing a language here
+   changes no request: what it does is choose the voice. That is also how
+   Mainland and Taiwan speech differ. Google's advice is not to ask for an
+   accent in the style text but to pick a regional voice from the Voice
+   Library, so each language below is a test over the library's voices. */
+
+export const STUDIO_VOICES = [
+  ['Zephyr', 'Bright'], ['Puck', 'Upbeat'], ['Charon', 'Informative'],
+  ['Kore', 'Firm'], ['Fenrir', 'Excitable'], ['Leda', 'Youthful'],
+  ['Orus', 'Firm'], ['Aoede', 'Breezy'], ['Callirrhoe', 'Easy-going'],
+  ['Autonoe', 'Bright'], ['Enceladus', 'Breathy'], ['Iapetus', 'Clear'],
+  ['Umbriel', 'Easy-going'], ['Algieba', 'Smooth'], ['Despina', 'Smooth'],
+  ['Erinome', 'Clear'], ['Algenib', 'Gravelly'], ['Rasalgethi', 'Informative'],
+  ['Laomedeia', 'Upbeat'], ['Achernar', 'Soft'], ['Alnilam', 'Firm'],
+  ['Schedar', 'Even'], ['Gacrux', 'Mature'], ['Pulcherrima', 'Forward'],
+  ['Achird', 'Friendly'], ['Zubenelgenubi', 'Casual'],
+  ['Vindemiatrix', 'Gentle'], ['Sadachbia', 'Lively'],
+  ['Sadaltager', 'Knowledgeable'], ['Sulafat', 'Warm'],
+];
+
+export const MODELS = ['gemini-3.8-flash-tts', 'gemini-3.8-flash-lite-tts'];
+
+/* The docs do not say how the library files Chinese (cmn-CN, zh-CN, or a
+   region code beside a bare zh), so each test reads the code, the region and
+   the accent, and any one of them is enough. Cantonese (yue, zh-HK) matches
+   neither on purpose. */
+const isMandarin = (v) => /^(zh|cmn)\b/i.test(v.language);
+const inRegion = (v, region) => v.region.toUpperCase() === region
+  || new RegExp(`-${region}$`, 'i').test(v.language);
+
+export const LANGUAGES = [
+  {
+    id: 'zh-CN', label: 'Chinese (Mainland)', short: 'zh-CN',
+    matches: (v) => isMandarin(v) && (inRegion(v, 'CN') || /mainland|beijing|putonghua/i.test(v.accent)),
+  },
+  {
+    id: 'zh-TW', label: 'Chinese (Taiwan)', short: 'zh-TW',
+    matches: (v) => isMandarin(v) && (inRegion(v, 'TW') || /taiwan/i.test(v.accent)),
+  },
+  { id: 'vi', label: 'Vietnamese', short: 'vi', matches: (v) => /^vi\b/i.test(v.language) },
+  { id: 'other', label: 'Any language', short: 'tts', matches: () => false },
+];
+
+export function languageById(id) {
+  return LANGUAGES.find((l) => l.id === id) || LANGUAGES[0];
+}
+
+/* The reference puts these fields on the voice, a nested `prompted` block, or
+   both, and REST may spell them either way, so one flat shape is made here. */
+export function normalizeVoice(raw) {
+  const nested = raw.prompted || {};
+  const read = (snake, camel) => raw[snake] || raw[camel] || nested[snake] || nested[camel] || '';
+  return {
+    id: raw.id || '',
+    name: read('display_name', 'displayName') || raw.id || '',
+    language: read('language_code', 'languageCode'),
+    region: read('region_code', 'regionCode'),
+    accent: read('accent', 'accent'),
+    gender: read('gender', 'gender'),
+  };
+}
+
+export function voicesFor(languageId, library) {
+  return library.filter(languageById(languageId).matches);
+}
+
+export function voiceLabel(v) {
+  const traits = [v.accent, v.gender].filter(Boolean).join(', ');
+  return traits ? `${v.name} (${traits})` : v.name;
+}
+
+/* What "Random" draws from: the voices made for this language when there are
+   any, otherwise the studio voices, which read any language. */
+export function randomVoice(languageId, library, random = Math.random) {
+  const regional = voicesFor(languageId, library).map((v) => v.id);
+  const pool = regional.length ? regional : STUDIO_VOICES.map(([name]) => name);
+  return pool[Math.floor(random() * pool.length)];
+}

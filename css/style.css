@@ -1,0 +1,171 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f6f5f1;
+  --card: #fffefb;
+  --text: #22211e;
+  --muted: #6e6b63;
+  --line: #dedbd1;
+  --accent: #1f6f5c;
+  --accent-text: #ffffff;
+  --warn: #9a5b00;
+  --bad: #b3372a;
+  --good: #1f7a4d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191a18;
+    --card: #232421;
+    --text: #ecebe6;
+    --muted: #a3a197;
+    --line: #3b3c37;
+    --accent: #4fb89f;
+    --accent-text: #10201b;
+    --warn: #e0a64d;
+    --bad: #ee8a7d;
+    --good: #6fce9d;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+header { margin-bottom: 20px; }
+h1 { font-size: 26px; margin: 0; }
+h2 { font-size: 18px; margin: 0; }
+header p { margin: 4px 0 0; color: var(--muted); }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+summary .muted { font-weight: 400; margin-left: 6px; }
+details[open] summary { margin-bottom: 12px; }
+
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+textarea, input:not([type]), input[type="text"], select {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+textarea { resize: vertical; display: block; }
+/* Safari ignores padding on a native select, which leaves it shorter than the
+   input beside it. */
+select {
+  appearance: none;
+  padding-right: 28px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+#keys-input { font-family: ui-monospace, Menlo, monospace; font-size: 13px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 12px 0;
+}
+.fields > div { min-width: 0; }
+#style { margin-bottom: 4px; }
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.row.between { justify-content: space-between; margin-top: 0; }
+
+button {
+  font: inherit;
+  font-size: 14px;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) { border-color: var(--muted); }
+button:disabled { opacity: 0.5; cursor: default; }
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+  padding: 8px 20px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.muted { color: var(--muted); }
+.hint { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+.hint:empty, .status:empty { display: none; }
+.status { margin: 10px 0 0; font-size: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.status.error { color: var(--bad); }
+
+table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+th { text-align: left; font-weight: 600; color: var(--muted); }
+th, td { padding: 6px 8px 6px 0; border-top: 1px solid var(--line); }
+td.key { font-family: ui-monospace, Menlo, monospace; }
+td:last-child { text-align: right; padding-right: 0; }
+.s-ready { color: var(--good); }
+.s-minute, .s-day { color: var(--warn); }
+.s-refused { color: var(--bad); }
+
+footer { margin-top: 32px; font-size: 13px; color: var(--muted); }
+
+#clips { list-style: none; margin: 12px 0 0; padding: 0; }
+.clip {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.clip p { margin: 0; overflow-wrap: anywhere; }
+.clip .meta { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.clip audio { display: block; width: 100%; margin-top: 10px; }
+
+@media (max-width: 520px) {
+  .fields { grid-template-columns: 1fr; }
+}

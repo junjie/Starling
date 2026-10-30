@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- This page holds API keys, so it may run only its own code and talk only to Google.
+       Inline styles are allowed because WebKit's own audio controls need them. -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src blob:; connect-src https://generativelanguage.googleapis.com; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>Starling</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Starling</h1>
+      <p>Text to speech in Chinese, Vietnamese and more, on your own API keys. Works with the Google Gemini API.</p>
+    </header>
+
+    <details id="keys-panel" class="card">
+      <summary><span>API keys</span> <span id="keys-summary" class="muted"></span></summary>
+      <label for="keys-input">One key per line, used in order. When one hits a limit the next takes over.</label>
+      <textarea id="keys-input" rows="4" spellcheck="false" autocomplete="off" placeholder="AIza…"></textarea>
+      <div class="row">
+        <button id="keys-save" type="button">Save keys</button>
+        <span id="keys-note" class="muted" role="status"></span>
+      </div>
+      <p class="hint">Google counts limits per project, not per key. Two keys from the same project share one allowance, so each key needs its own project. Keys stay in this browser and are sent only to Google.</p>
+      <table id="keys-table" hidden>
+        <thead><tr><th>Key</th><th>Status</th><th>Used today</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </details>
+
+    <section class="card">
+      <label for="text">Text</label>
+      <textarea id="text" rows="5" placeholder="Xin chào, bạn có khỏe không?"></textarea>
+
+      <div class="fields">
+        <div>
+          <label for="language">Language</label>
+          <select id="language"></select>
+        </div>
+        <div>
+          <label for="voice">Voice</label>
+          <select id="voice"></select>
+        </div>
+        <div>
+          <label for="model">Model</label>
+          <input id="model" list="models" spellcheck="false" autocomplete="off">
+          <datalist id="models"></datalist>
+        </div>
+        <div>
+          <label for="format">Save as</label>
+          <select id="format">
+            <option value="ogg">Ogg Opus (small)</option>
+            <option value="wav">WAV (original)</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="style">Style <span class="muted">(optional)</span></label>
+      <input id="style" placeholder="calm and clear, a little slow">
+
+      <p id="voice-note" class="hint" role="status"></p>
+
+      <div class="row">
+        <button id="generate" type="button" class="primary">Generate</button>
+        <button id="stop" type="button" hidden>Stop</button>
+        <label class="check"><input id="per-line" type="checkbox"> One clip per line</label>
+      </div>
+      <p id="status" class="status" role="status"></p>
+    </section>
+
+    <section>
+      <div class="row between">
+        <h2>Clips <span id="clip-count" class="muted"></span></h2>
+        <div class="row">
+          <button id="save-all" type="button" hidden>Download all</button>
+          <button id="clear-all" type="button" hidden>Delete all</button>
+        </div>
+      </div>
+      <p class="hint">Clips stay in this browser until you delete them, but a browser can clear site data, so download what you want to keep.</p>
+      <ul id="clips"></ul>
+    </section>
+
+    <footer>Gemini is a trademark of Google LLC. Starling is an independent project, not affiliated with or endorsed by Google.</footer>
+  </main>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
