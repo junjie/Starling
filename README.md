@@ -8,7 +8,7 @@ There is no server. The page calls Google directly from your browser.
 
 ## Using it
 
-1. Get a key from [Google AI Studio](https://aistudio.google.com/apikey) and
+1. Get a key from [Google AI Studio](https://aistudio.google.com/api-keys) and
    paste it under **API keys**, one per line.
 2. Choose a language and a voice, or leave the voice on Random.
 3. Type your text and press **Generate**. Tick **One clip per line** to make one

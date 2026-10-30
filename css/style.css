@@ -140,6 +140,8 @@ button.primary {
 .muted { color: var(--muted); }
 .hint { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
 .hint:empty, .status:empty { display: none; }
+.key-link { margin: 0 0 8px; }
+a { color: var(--accent); }
 .status { margin: 10px 0 0; font-size: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .status.error { color: var(--bad); }
 
