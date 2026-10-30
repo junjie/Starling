@@ -158,7 +158,10 @@ export async function listVoices({ key, fetchFn = globalThis.fetch }) {
     const query = new URLSearchParams({ page_size: '1000' });
     if (token) query.set('page_token', token);
     const res = await fetchFn(`${BASE}/voices?${query}`, { headers: { 'x-goog-api-key': key } });
-    if (!res.ok) throw new GeminiError(`The voice list returned HTTP ${res.status}.`);
+    if (!res.ok) {
+      const { message } = classifyFailure(res.status, await res.text().catch(() => ''), 0);
+      throw new GeminiError(`The voice list returned HTTP ${res.status}: ${message}`);
+    }
     const data = await res.json();
     voices.push(...(data.voices || []));
     token = data.next_page_token || data.nextPageToken || '';

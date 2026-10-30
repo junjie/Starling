@@ -39,6 +39,7 @@ const store = {
 
 let ring = new KeyRing({ keys: store.get('keys', []), state: store.get('keyState', {}) });
 let library = store.get('voices', { at: 0, list: [] }).list;
+let libraryError = '';
 let clips = [];
 let running = null;
 const urls = new Map();
@@ -128,15 +129,20 @@ function saveKeys() {
 
 /* ── voices ──────────────────────────────────────────────────────────── */
 
+/* Listing voices spends no speech quota, so a key resting on a model can still
+   do it. Each key is tried in turn, and a failure is shown rather than logged:
+   without it the menu just looks as if the language has no voices. */
 async function loadLibrary() {
-  const key = ring.pick($('model').value.trim());
-  if (!key) return;
-  try {
-    const raw = await listVoices({ key });
-    library = raw.map(normalizeVoice).filter((v) => v.id);
-    store.set('voices', { at: Date.now(), list: library });
-  } catch (e) {
-    console.warn('Could not load the Voice Library.', e);
+  for (const key of ring.keys) {
+    try {
+      const raw = await listVoices({ key });
+      library = raw.map(normalizeVoice).filter((v) => v.id);
+      store.set('voices', { at: Date.now(), list: library });
+      libraryError = '';
+      break;
+    } catch (e) {
+      libraryError = e.message;
+    }
   }
   renderVoices();
 }
@@ -168,7 +174,9 @@ function renderVoices() {
   select.value = [...select.options].some((o) => o.value === chosen) ? chosen : RANDOM;
 
   let note = '';
-  if (language.id !== 'other' && !regional.length) {
+  if (libraryError) {
+    note = `The Voice Library did not load, so only studio voices are listed. ${libraryError}`;
+  } else if (language.id !== 'other' && !regional.length) {
     note = library.length
       ? `The Voice Library has no ${language.label} voices listed, so studio voices will read it in their own accent.`
       : `Regional voices load once a key is saved. Until then studio voices read ${language.label} in their own accent.`;
@@ -412,7 +420,7 @@ async function init() {
   }
 
   const cached = store.get('voices', { at: 0 });
-  if (ring.keys.length && Date.now() - cached.at > VOICES_MAX_AGE) loadLibrary();
+  if (ring.keys.length && (!library.length || Date.now() - cached.at > VOICES_MAX_AGE)) loadLibrary();
 }
 
 init();
