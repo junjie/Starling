@@ -6,18 +6,20 @@
    accent in the style text but to pick a regional voice from the Voice
    Library, so each language below is a test over the library's voices. */
 
+/* Name, Google's one-word style, and gender. The Gemini API docs give only the
+   first two; the genders are from the Cloud Text-to-Speech Gemini-TTS page. */
 export const STUDIO_VOICES = [
-  ['Zephyr', 'Bright'], ['Puck', 'Upbeat'], ['Charon', 'Informative'],
-  ['Kore', 'Firm'], ['Fenrir', 'Excitable'], ['Leda', 'Youthful'],
-  ['Orus', 'Firm'], ['Aoede', 'Breezy'], ['Callirrhoe', 'Easy-going'],
-  ['Autonoe', 'Bright'], ['Enceladus', 'Breathy'], ['Iapetus', 'Clear'],
-  ['Umbriel', 'Easy-going'], ['Algieba', 'Smooth'], ['Despina', 'Smooth'],
-  ['Erinome', 'Clear'], ['Algenib', 'Gravelly'], ['Rasalgethi', 'Informative'],
-  ['Laomedeia', 'Upbeat'], ['Achernar', 'Soft'], ['Alnilam', 'Firm'],
-  ['Schedar', 'Even'], ['Gacrux', 'Mature'], ['Pulcherrima', 'Forward'],
-  ['Achird', 'Friendly'], ['Zubenelgenubi', 'Casual'],
-  ['Vindemiatrix', 'Gentle'], ['Sadachbia', 'Lively'],
-  ['Sadaltager', 'Knowledgeable'], ['Sulafat', 'Warm'],
+  ['Zephyr', 'Bright', 'female'], ['Puck', 'Upbeat', 'male'], ['Charon', 'Informative', 'male'],
+  ['Kore', 'Firm', 'female'], ['Fenrir', 'Excitable', 'male'], ['Leda', 'Youthful', 'female'],
+  ['Orus', 'Firm', 'male'], ['Aoede', 'Breezy', 'female'], ['Callirrhoe', 'Easy-going', 'female'],
+  ['Autonoe', 'Bright', 'female'], ['Enceladus', 'Breathy', 'male'], ['Iapetus', 'Clear', 'male'],
+  ['Umbriel', 'Easy-going', 'male'], ['Algieba', 'Smooth', 'male'], ['Despina', 'Smooth', 'female'],
+  ['Erinome', 'Clear', 'female'], ['Algenib', 'Gravelly', 'male'], ['Rasalgethi', 'Informative', 'male'],
+  ['Laomedeia', 'Upbeat', 'female'], ['Achernar', 'Soft', 'female'], ['Alnilam', 'Firm', 'male'],
+  ['Schedar', 'Even', 'male'], ['Gacrux', 'Mature', 'female'], ['Pulcherrima', 'Forward', 'female'],
+  ['Achird', 'Friendly', 'male'], ['Zubenelgenubi', 'Casual', 'male'],
+  ['Vindemiatrix', 'Gentle', 'female'], ['Sadachbia', 'Lively', 'male'],
+  ['Sadaltager', 'Knowledgeable', 'male'], ['Sulafat', 'Warm', 'female'],
 ];
 
 export const MODELS = ['gemini-3.8-flash-tts', 'gemini-3.8-flash-lite-tts'];

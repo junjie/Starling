@@ -163,7 +163,7 @@ function renderVoices() {
 
   const groups = [option(RANDOM, regional.length ? `Random ${language.label} voice` : 'Random voice')];
   if (regional.length) groups.push(group(`${language.label} voices`, regional.map((v) => option(v.id, voiceLabel(v)))));
-  groups.push(group('Studio voices', STUDIO_VOICES.map(([name, trait]) => option(name, `${name} (${trait})`))));
+  groups.push(group('Studio voices', STUDIO_VOICES.map(([name, trait, gender]) => option(name, `${name} (${trait}, ${gender})`))));
   select.replaceChildren(...groups);
   select.value = [...select.options].some((o) => o.value === chosen) ? chosen : RANDOM;
 
